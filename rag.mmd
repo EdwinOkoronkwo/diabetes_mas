@@ -1,0 +1,91 @@
+classDiagram
+%% =========================================================
+%%                      COLOR STYLES
+%% =========================================================
+%% Interfaces = Blue
+style IRetriever fill:#154360,stroke:#0B2A63,stroke-width:2px,color:#ffffff
+style IGenerator fill:#154360,stroke:#0B2A63,stroke-width:2px,color:#ffffff
+style IIndexer fill:#154360,stroke:#0B2A63,stroke-width:2px,color:#ffffff
+style ITrainer fill:#154360,stroke:#0B2A63,stroke-width:2px,color:#ffffff
+
+%% Concrete Classes = Green
+style ChromaRetriever fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style LLMGenerator fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style ChromaIndexer fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style ModelTrainer fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+
+%% Additional agent colors (for context)
+style RetrievalAgent fill:#7D6608,stroke:#5D5C0B,stroke-width:2px,color:#ffffff
+style PredictiveAgent fill:#7D6608,stroke:#5D5C0B,stroke-width:2px,color:#ffffff
+style IKnowledgeBase fill:#154360,stroke:#0B2A63,stroke-width:2px,color:#ffffff
+
+%% =========================================================
+%%                  INTERFACES (With Methods)
+%% =========================================================
+
+class IRetriever {
+    <<interface>>
+    + embed_query(query: str) List[float]
+    + similarity_search(query_emb: List[float], top_k: int) List[Document]
+}
+
+class IGenerator {
+    <<interface>>
+    + generate_text(prompt: str) str
+    + summarize(text: str) str
+}
+
+class IIndexer {
+    <<interface>>
+    + add_document(doc: Document)
+    + update_index()
+}
+
+class ITrainer {
+    <<interface>>
+    + fine_tune(dataset: Dataset)
+    + evaluate() Metrics
+}
+
+%% =========================================================
+%%              CONCRETE IMPLEMENTATIONS (ATTRIBUTES ONLY)
+%% =========================================================
+
+class ChromaRetriever {
+    <<class>>
+    - collection: ChromaCollection
+    - embed_model: EmbeddingModel
+}
+
+class LLMGenerator {
+    <<class>>
+    - model: LLM
+    - temperature: float
+}
+
+class ChromaIndexer {
+    <<class>>
+    - collection: ChromaCollection
+}
+
+class ModelTrainer {
+    <<class>>
+    - base_model: LLM
+    - training_config: TrainingConfig
+}
+
+%% Interface → Implementation
+IRetriever <|.. ChromaRetriever
+IGenerator <|.. LLMGenerator
+IIndexer <|.. ChromaIndexer
+ITrainer <|.. ModelTrainer
+
+%% =========================================================
+%%                     RAG DEPENDENCIES
+%% =========================================================
+RetrievalAgent --> IRetriever
+RetrievalAgent --> IGenerator
+RetrievalAgent --> IIndexer
+
+PredictiveAgent --> IGenerator
+PredictiveAgent --> IKnowledgeBase
