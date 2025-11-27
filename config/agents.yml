@@ -1,0 +1,6 @@
+agents:
+  input_manager: "agents.InputManager"
+  retrieval_agent: "agents.RetrievalAgent"
+  predictive_agent: "agents.PredictiveAgent"
+  reflection_agent: "agents.ReflectionAgent"
+  knowledge_base: "agents.KnowledgeBase"

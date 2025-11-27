@@ -1,0 +1,162 @@
+classDiagram
+%% ---------------------------------------------------------
+%%                  TOP LEVEL: CLIENT
+%% ---------------------------------------------------------
+class DiabetesMASClient {
+    <<client>>
+    +collect_user_input()
+    +display_results()
+    +trigger_pipeline()
+}
+DiabetesMASClient --> ILangGraphAgentController : uses
+
+%% ---------------------------------------------------------
+%%         CONTROLLER LAYER
+%% ---------------------------------------------------------
+class ILangGraphAgentController {
+    <<interface>>
+    +run_pipeline()
+    +route_to_agent()
+    +get_state()
+}
+
+class LangGraphAgentController {
+    <<class>>
+    -state: IAgentState
+    -checkpointer: ICheckpointer
+    +run_pipeline()
+    +route_to_agent()
+}
+ILangGraphAgentController <|.. LangGraphAgentController
+
+LangGraphAgentController --> IInputManager
+LangGraphAgentController --> IRetrievalAgent
+LangGraphAgentController --> IPredictiveAgent
+LangGraphAgentController --> IReflectionAgent
+LangGraphAgentController --> IKnowledgeBase
+LangGraphAgentController --> IAgentState
+LangGraphAgentController --> ICheckpointer
+
+%% ---------------------------------------------------------
+%%                  AGENT INTERFACES
+%% ---------------------------------------------------------
+class IInputManager {
+    <<interface>>
+    +validate_input()
+    +augment_input()
+    +self_reflect()
+}
+
+class IRetrievalAgent {
+    <<interface>>
+    +retrieve_context()
+    +summarize_context()
+    +self_reflect()
+}
+
+class IPredictiveAgent {
+    <<interface>>
+    +predict_risk()
+    +generate_plan()
+    +self_reflect()
+}
+
+class IReflectionAgent {
+    <<interface>>
+    +review_output()
+    +check_consistency()
+    +safety_filter()
+    +self_reflect()
+}
+
+class IKnowledgeBase {
+    <<interface>>
+    +lookup()
+    +store_fact()
+    +get_medical_rules()
+}
+
+class IAgentState {
+    <<interface>>
+    +get_state()
+    +update_state()
+}
+
+class ICheckpointer {
+    <<interface>>
+    +save_state(IAgentState)
+    +load_state(index)
+}
+
+%% ---------------------------------------------------------
+%%                 AGENT IMPLEMENTATIONS
+%% ---------------------------------------------------------
+class InputManager {
+    <<class>>
+    -state: IAgentState
+}
+IInputManager <|.. InputManager
+
+class RetrievalAgent {
+    <<class>>
+    -retriever: IRetriever
+    -generator: IGenerator
+    -state: IAgentState
+}
+IRetrievalAgent <|.. RetrievalAgent
+
+class PredictiveAgent {
+    <<class>>
+    -knowledge_base: IKnowledgeBase
+    -generator: IGenerator
+    -state: IAgentState
+}
+IPredictiveAgent <|.. PredictiveAgent
+
+class ReflectionAgent {
+    <<class>>
+    -state: IAgentState
+}
+IReflectionAgent <|.. ReflectionAgent
+
+class KnowledgeBase {
+    <<class>>
+    -storage: dict
+}
+IKnowledgeBase <|.. KnowledgeBase
+
+class AgentState {
+    <<class>>
+    -current_input
+    -current_output
+    -metadata
+}
+IAgentState <|.. AgentState
+
+class Checkpointer {
+    <<class>>
+    -saved_states: list
+}
+ICheckpointer <|.. Checkpointer
+
+%% ---------------------------------------------------------
+%%                  STYLING
+%% ---------------------------------------------------------
+style DiabetesMASClient fill:#154360,stroke:#0B2A63,stroke-width:2px,color:#ffffff
+style ILangGraphAgentController fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style LangGraphAgentController fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style IInputManager fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style IRetrievalAgent fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style IPredictiveAgent fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style IReflectionAgent fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style IKnowledgeBase fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style IAgentState fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style ICheckpointer fill:#85C1E9,stroke:#2874A6,stroke-width:2px,color:#000000
+style InputManager fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style RetrievalAgent fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style PredictiveAgent fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style ReflectionAgent fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style KnowledgeBase fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style AgentState fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+style Checkpointer fill:#117A65,stroke:#0E6655,stroke-width:2px,color:#ffffff
+

@@ -1,0 +1,7 @@
+app:
+  env: "dev"
+  log_level: "INFO"
+
+pipeline:
+  start_node: "input_manager"
+  enable_reflection: true

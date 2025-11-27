@@ -1,0 +1,15 @@
+retriever:
+  type: "chroma"
+  embedding_model: "all-MiniLM-L6-v2"
+  top_k: 5
+
+generator:
+  model: "gpt-4o-mini"
+
+indexer:
+  persist_dir: "./vector_store"
+
+trainer:
+  model_name: "diabetes-mas-model"
+  epochs: 3
+  batch_size: 16
