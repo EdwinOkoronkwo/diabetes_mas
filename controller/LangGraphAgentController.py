@@ -7,13 +7,13 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 class LangGraphAgentController:
-    def __init__(self, input_manager, retrieval_agent, predictive_agent):
+    def __init__(self, io_manager, retrieval_agent, predictive_agent):
         """
-        input_manager: handles input validation/augmentation
+        io_manager: handles input validation/augmentation and output formatting
         retrieval_agent: handles RAG retrieval (RagAgentState -> RAG answer & summary)
         predictive_agent: handles risk prediction and plan generation
         """
-        self.input_manager = input_manager
+        self.io_manager = io_manager
         self.retrieval = retrieval_agent
         self.predictive_agent = predictive_agent
 
@@ -39,8 +39,8 @@ class LangGraphAgentController:
         }
 
         # --- Step 2: Input validation / augmentation ---
-        state = self.input_manager.validate_input(state)
-        state = self.input_manager.augment_input(state)
+        state = self.io_manager.validate_input(state)
+        state = self.io_manager.augment_input(state)
 
         # --- Step 3: RAG retrieval ---
         state = self.retrieval.run(state)

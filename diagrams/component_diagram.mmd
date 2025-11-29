@@ -1,0 +1,50 @@
+classDiagram
+    class LangGraphAgentController {
+        +run(user_input)
+    }
+
+    class IOManager {
+        +validate_input(state)
+        +augment_input(state)
+    }
+
+    class RetrievalAgent {
+        +run(state)
+    }
+
+    class PredictiveAgent {
+        +predict_risk(rag_answer)
+    }
+
+    class ReflectionAgent {
+        +review_output(output)
+        +check_consistency(output)
+        +safety_filter(output)
+    }
+
+    class ChromaRetriever {
+        +query_documents(query)
+    }
+
+    class LLMGenerator {
+        +generate_answer(context)
+    }
+
+    class MLModelWrapper {
+        +predict_proba(text)
+    }
+
+    class PredictiveLLMGenerator {
+        +interpret(text, score)
+    }
+
+    LangGraphAgentController --> IOManager
+    LangGraphAgentController --> RetrievalAgent
+    LangGraphAgentController --> PredictiveAgent
+    LangGraphAgentController --> ReflectionAgent
+
+    RetrievalAgent --> ChromaRetriever
+    RetrievalAgent --> LLMGenerator
+
+    PredictiveAgent --> MLModelWrapper
+    PredictiveAgent --> PredictiveLLMGenerator

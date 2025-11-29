@@ -1,0 +1,57 @@
+graph TD
+    %% Styles
+    classDef container fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:black;
+    classDef database fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:black;
+    classDef actor fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:black;
+
+    %% Actors
+    User((User)):::actor
+
+    %% System Boundary
+    subgraph "Diabetes Multi-Agent System"
+        direction TB
+        
+        %% Controller Layer
+        Controller[LangGraph Controller]:::container
+
+        %% Agent Layer
+        subgraph "Agents"
+            IOMgr[IO Manager]:::container
+            RetrievalAg[Retrieval Agent]:::container
+            PredictiveAg[Predictive Agent]:::container
+        end
+
+        %% RAG Subsystem
+        subgraph "RAG System"
+            Retriever[Retriever]:::container
+            Generator[LLM Generator]:::container
+        end
+
+        %% Data Layer
+        KB[(ChromaDB\nKnowledge Base)]:::database
+    end
+
+    %% Relationships
+    User -- "Submits Health Data" --> Controller
+    
+    Controller -- "1. Validate & Augment" --> IOMgr
+    IOMgr -- "Validated Data" --> Controller
+
+    Controller -- "2. Request Context" --> RetrievalAg
+    RetrievalAg -- "Query" --> Retriever
+    Retriever -- "Vector Search" --> KB
+    KB -- "Relevant Docs" --> Retriever
+    Retriever -- "Documents" --> RetrievalAg
+    RetrievalAg -- "Summarize" --> Generator
+    Generator -- "Summary & Answer" --> RetrievalAg
+    RetrievalAg -- "RAG Output" --> Controller
+
+    Controller -- "3. Predict & Plan" --> PredictiveAg
+    PredictiveAg -- "Uses Context + Data" --> Controller
+    
+    Controller -- "Final Result" --> User
+
+    %% Descriptions
+    IOMgr:::container
+    RetrievalAg:::container
+    PredictiveAg:::container

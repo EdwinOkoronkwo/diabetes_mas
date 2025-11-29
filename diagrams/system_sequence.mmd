@@ -1,0 +1,47 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant Controller as LangGraphAgentController
+    participant IOMgr as IOManager
+    participant RetAgent as RetrievalAgent
+    participant Retriever as ChromaRetriever
+    participant Generator as LLMGenerator
+    participant PredAgent as PredictiveAgent
+    participant RefAgent as ReflectionAgent
+    participant MLModel as MLModelWrapper
+    participant PredLLM as PredictiveLLMGenerator
+
+    User->>Controller: run(user_input)
+    
+    %% Input Phase
+    Controller->>IOMgr: validate_input(state)
+    IOMgr-->>Controller: validated_state
+    Controller->>IOMgr: augment_input(state)
+    IOMgr-->>Controller: augmented_state
+
+    %% Retrieval Phase
+    Controller->>RetAgent: run(state)
+    RetAgent->>Retriever: embed_query(query)
+    RetAgent->>Retriever: query_documents(query)
+    Retriever-->>RetAgent: retrieved_docs
+    RetAgent->>Generator: generate_answer(docs, query)
+    Generator-->>RetAgent: rag_answer
+    RetAgent->>Generator: generate_summary(rag_answer)
+    Generator-->>RetAgent: rag_summary
+    RetAgent-->>Controller: state_with_rag_results
+
+    %% Prediction Phase
+    Controller->>PredAgent: predict_risk(state)
+    PredAgent->>MLModel: predict_proba(rag_answer + context)
+    MLModel-->>PredAgent: risk_score
+    PredAgent->>PredLLM: interpret(text, risk_score)
+    PredLLM-->>PredAgent: risk_level, health_plan
+    PredAgent-->>Controller: risk_result, recommended_plan
+
+    %% Reflection Phase
+    Controller->>RefAgent: review_output(risk_result)
+    RefAgent->>RefAgent: check_consistency()
+    RefAgent->>RefAgent: safety_filter()
+    RefAgent-->>Controller: final_validated_output
+
+    Controller-->>User: Final Result (Risk, Plan, Summary)

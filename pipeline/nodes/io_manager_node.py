@@ -1,23 +1,29 @@
-# diabetes_mas/pipeline/nodes/input_manager_node.py
+# diabetes_mas/pipeline/nodes/io_manager_node.py
 
 from typing import TypedDict
 # Assuming these are necessary for your logic and state definition
-from agents.InputManager import InputManager
+from agents.IOManager import IOManager
 from system.AgentState import AgentState
 
 
 # ============================================
-# input_manager_node.py
+# io_manager_node.py
 # ============================================
 
-def input_manager_node(agent_state: dict) -> dict:
+def io_manager_node(agent_state: dict) -> dict:
     """
     Validates the input and stores it in validated_input.
     """
-    manager = InputManager()
+    manager = IOManager()
     current_input = agent_state.get("current_input", "")
 
     # Validate the input
+    validated = manager.validate_input(current_input)
+    
+    # Update state
+    agent_state["validated_input"] = validated
+    
+    return agent_state
     validated = manager.validate_input(current_input)
 
     print(f"[InputManager]: Input validated: '{validated}'")

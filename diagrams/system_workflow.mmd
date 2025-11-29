@@ -1,0 +1,41 @@
+stateDiagram-v2
+    [*] --> IOProcessing
+
+    state IOProcessing {
+        [*] --> ValidateInput
+        ValidateInput --> AugmentInput
+        AugmentInput --> [*]
+    }
+
+    IOProcessing --> RetrievalProcess
+
+    state RetrievalProcess {
+        [*] --> CreateRagState
+        CreateRagState --> EmbedQuery
+        EmbedQuery --> RetrieveDocuments
+        RetrieveDocuments --> GenerateAnswer
+        GenerateAnswer --> GenerateSummary
+        GenerateSummary --> UpdateAgentState
+        UpdateAgentState --> [*]
+    }
+
+    RetrievalProcess --> PredictionProcess
+
+    state PredictionProcess {
+        [*] --> PrepareInputText
+        PrepareInputText --> MLPrediction
+        MLPrediction --> LLMInterpretation
+        LLMInterpretation --> GenerateHealthPlan
+        GenerateHealthPlan --> [*]
+    }
+
+    PredictionProcess --> ReflectionProcess
+
+    state ReflectionProcess {
+        [*] --> ReviewOutput
+        ReviewOutput --> CheckConsistency
+        CheckConsistency --> SafetyFilter
+        SafetyFilter --> [*]
+    }
+
+    ReflectionProcess --> [*]

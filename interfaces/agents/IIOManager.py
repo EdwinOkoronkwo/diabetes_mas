@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class IInputManager(ABC):
+class IIOManager(ABC):
 
     @abstractmethod
     def validate_input(self, user_input: str) -> dict:

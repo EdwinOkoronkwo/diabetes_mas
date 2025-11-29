@@ -17,15 +17,18 @@ logger = logging.getLogger(__name__)
 
 def retrieval_node(state: RagAgentState) -> RagAgentState:
     query = getattr(state, "query", "")
-    # 1. Build embedding function
-    embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-    embedding_fn = SentenceTransformerEmbeddingFunction(embedding_model)
-
-    # Initialize retriever
-    retriever = ChromaRetriever(
-        collection_name="diabetes_docs_v2",
-        embedding_fn=embedding_fn
-    )
+    
+    # Use existing retriever from state if available
+    if hasattr(state, "retriever") and state.retriever:
+        retriever = state.retriever
+    else:
+        # Fallback
+        embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+        embedding_fn = SentenceTransformerEmbeddingFunction(embedding_model)
+        retriever = ChromaRetriever(
+            collection_name="diabetes_docs_v2",
+            embedding_fn=embedding_fn
+        )
 
     # Search by query text only
     logger.info("[retrieval_node] Searching by raw query text")

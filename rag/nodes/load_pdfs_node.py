@@ -6,7 +6,7 @@ from rag.state.RagAgentState import RagAgentState
 
 logger = logging.getLogger(__name__)
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 def load_pdfs_node(state: RagAgentState) -> RagAgentState:

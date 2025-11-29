@@ -1,12 +1,10 @@
-from interfaces.agents.IInputManager import IInputManager
-
-from interfaces.agents.IInputManager import IInputManager
+from interfaces.agents.IIOManager import IIOManager
 from system.AgentState import AgentState
 
 
-class InputManager:
+class IOManager(IIOManager):
     """
-    A pure service class to handle input validation and initial sanitization.
+    A pure service class to handle input validation, initial sanitization, and output formatting.
     """
 
     def validate_input(self, user_input: str) -> str:
@@ -15,8 +13,13 @@ class InputManager:
             return "Error: Query too short."
 
         validated_input = user_input.strip()
-        print(f"[InputManager]: Input validated: '{validated_input[:40]}...'")
+        print(f"[IOManager]: Input validated: '{validated_input[:40]}...'")
         return validated_input
+
+    def augment_input(self, user_input: str) -> dict:
+        """Simulates input augmentation."""
+        # Placeholder implementation
+        return {"augmented": user_input}
 
 # class InputManager:
 #     def validate_input(self, state):

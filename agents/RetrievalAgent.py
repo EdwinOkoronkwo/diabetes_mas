@@ -71,7 +71,7 @@ class RetrievalAgent:
 
         # 1️⃣ Create a fresh RAG state
         rag_state = RagAgentState(
-            pdf_folder="../rag/data/01_raw/",
+            pdf_folder="rag/data/",
             query=query,
         )
 

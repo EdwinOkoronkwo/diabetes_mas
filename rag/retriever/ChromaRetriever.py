@@ -5,7 +5,7 @@ from langchain_community.vectorstores import Chroma
 from rag.db.chroma_client import get_chroma_db
 
 logger = logging.getLogger(__name__)
-persist_directory="C:\CentennialCollege\COMP248_AI_Software_Design\Project\diabetes_mas\rag\chroma_db"
+persist_directory=r"C:\CentennialCollege\COMP248_AI_Software_Design\Project\diabetes_mas\rag\chroma_db"
 
 class ChromaRetriever:
     def __init__(self, collection_name: str, embedding_fn, chroma_db=None):

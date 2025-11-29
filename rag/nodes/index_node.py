@@ -13,15 +13,17 @@ def index_node(state: RagAgentState) -> RagAgentState:
         logger.warning("[index_node] No documents found")
         return state
 
-    # 1. Build embedding function
-    embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
-    embedding_fn = SentenceTransformerEmbeddingFunction(embedding_model)
-
-    # 2. Initialize indexer correctly
-    indexer = ChromaIndexer(
-        collection_name="medical_docs",
-        embedding_fn=embedding_fn
-    )
+    # Use existing indexer from state if available
+    if hasattr(state, "indexer") and state.indexer:
+        indexer = state.indexer
+    else:
+        # Fallback (should match RetrievalAgent config)
+        embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+        embedding_fn = SentenceTransformerEmbeddingFunction(embedding_model)
+        indexer = ChromaIndexer(
+            collection_name="diabetes_docs_v2",
+            embedding_fn=embedding_fn
+        )
 
     # 3. Index documents
     for i, doc in enumerate(state.documents):

@@ -1,0 +1,38 @@
+sequenceDiagram
+    autonumber
+    actor User
+    participant Controller as LangGraph Controller
+    participant InputNode as Input Manager
+    participant RetrievalNode as Retrieval Agent
+    participant PredictiveNode as Predictive Agent
+    participant DB as ChromaDB
+
+    User->>Controller: run(user_input)
+    
+    note right of Controller: Initialize AgentState
+
+    %% Step 1: Input Processing
+    Controller->>InputNode: validate_input(state)
+    InputNode-->>Controller: state (validated)
+    
+    Controller->>InputNode: augment_input(state)
+    InputNode-->>Controller: state (augmented)
+
+    %% Step 2: Retrieval (RAG)
+    Controller->>RetrievalNode: run(state)
+    RetrievalNode->>DB: query_documents(query)
+    DB-->>RetrievalNode: relevant_documents
+    RetrievalNode->>RetrievalNode: generate_summary(documents)
+    RetrievalNode-->>Controller: state (rag_answer, rag_summary)
+
+    %% Step 3: Prediction & Planning
+    Controller->>PredictiveNode: predict_risk(state)
+    note right of PredictiveNode: Uses validated_input + rag_summary
+    PredictiveNode-->>Controller: risk_assessment
+
+    Controller->>PredictiveNode: generate_plan(state)
+    note right of PredictiveNode: Uses risk + context
+    PredictiveNode-->>Controller: health_plan
+
+    %% Final Response
+    Controller-->>User: Final State (Risk, Plan, Summary)
