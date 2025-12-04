@@ -106,15 +106,18 @@ class MLModelWrapper:
             print(
                 f"[DEBUG: Init] Model params: EMBEDDING_DIM={EMBEDDING_DIM}, NUM_CLASSES={NUM_CLASSES}, MAX_SEQUENCE_LENGTH={MAX_SEQUENCE_LENGTH}")
 
+            # Create model on CPU first (avoid meta tensor issues in PyTorch 2.x)
             self.model = DiabetesRiskTextClassifier(
                 vocab_size=vocab_size,
                 embedding_dim=EMBEDDING_DIM,
                 num_classes=NUM_CLASSES
-            ).to(self.device)
+            )
 
             # 3. Load the saved weights (state dictionary)
-            state_dict = torch.load(MODEL_STATE_DICT_PATH, map_location=self.device)
+            # Use weights_only=False for compatibility with older saved models
+            state_dict = torch.load(MODEL_STATE_DICT_PATH, map_location='cpu', weights_only=False)
             self.model.load_state_dict(state_dict)
+            self.model = self.model.to(self.device)
             self.model.eval()  # Set model to evaluation mode
 
             print("[MLModelWrapper] PyTorch Model and Tokenizer loaded successfully.")

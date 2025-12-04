@@ -44,9 +44,9 @@ except Exception as e:
 # --- UI Layout ---
 st.title("🩺 Diabetes Risk Assessment System")
 st.markdown("""
-This system uses a **Multi-Agent Architecture** to assess diabetes risk.
-1.  **Retrieval Agent**: Searches medical knowledge base for context.
-2.  **Predictive Agent**: Uses ML & LLM to calculate risk and generate a plan.
+This system uses a Multi-Agent Architecture to assess diabetes risk.
+1.  Retrieval Agent: Searches medical knowledge base for context.
+2.  Predictive Agent: Uses ML & LLM to calculate risk and generate a plan.
 """)
 
 # --- Sidebar ---
@@ -80,11 +80,11 @@ if st.button("Analyze Risk", type="primary"):
                 with col1:
                     st.subheader("Risk Assessment")
                     if risk_level.lower() == "high":
-                        st.error(f"**Risk Level:** {risk_level.upper()}")
+                        st.error(f"Risk Level: {risk_level.upper()}")
                     elif risk_level.lower() == "moderate":
-                        st.warning(f"**Risk Level:** {risk_level.upper()}")
+                        st.warning(f"Risk Level: {risk_level.upper()}")
                     else:
-                        st.success(f"**Risk Level:** {risk_level.upper()}")
+                        st.success(f"Risk Level: {risk_level.upper()}")
                     
                     st.metric("ML Confidence Score", f"{risk_score:.2%}")
 
@@ -93,12 +93,40 @@ if st.button("Analyze Risk", type="primary"):
                     st.write(result_state.get("rag_summary", "No summary available."))
 
                 # 2. Health Plan
-                st.subheader("📋 Recommended Health Plan")
+                st.subheader("== Recommended Health Plan ==")
                 plan = result_state.get("recommended_plan", "No plan generated.")
-                st.markdown(plan)
+                
+                # Format the plan properly if it's a dictionary
+                if isinstance(plan, dict):
+                    if plan.get("immediateActions"):
+                        st.markdown("Immediate Actions:")
+                        for action in plan["immediateActions"]:
+                            st.markdown(f"- {action}")
+                    
+                    if plan.get("medicationManagement"):
+                        st.markdown("Medication Management:")
+                        for item in plan["medicationManagement"]:
+                            st.markdown(f"- {item}")
+                    
+                    if plan.get("lifestyleInterventions"):
+                        st.markdown("Lifestyle Interventions:")
+                        for item in plan["lifestyleInterventions"]:
+                            st.markdown(f"- {item}")
+                    
+                    if plan.get("followUp"):
+                        st.markdown("Follow-Up:")
+                        for item in plan["followUp"]:
+                            st.markdown(f"- {item}")
+                    
+                    # If dict is empty or has no recognized keys
+                    if not any(plan.get(k) for k in ["immediateActions", "medicationManagement", "lifestyleInterventions", "followUp"]):
+                        st.info("No specific recommendations generated.")
+                else:
+                    # It's a string
+                    st.markdown(plan)
 
-                # 3. Debug / Transparency (Expanders)
-                with st.expander("🔍 View Retrieved Medical Context (RAG)"):
+                # 3. Debug / Transparency
+                with st.expander("View Retrieved Medical Context (RAG)"):
                     st.markdown(result_state.get("retrieved_context", "No context retrieved."))
                 
                 with st.expander("🛠️ View Raw Agent State"):
