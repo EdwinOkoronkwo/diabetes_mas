@@ -3,8 +3,6 @@
 .env.*
 !.env.example
 
-Python
-
 pycache/
 *.pyc
 *.pyo
@@ -17,10 +15,6 @@ venv/
 .vscode/
 
 Jupyter/Data
-
-.ipynb_checkpoints
-data/
-models/
 
 Logs
 
