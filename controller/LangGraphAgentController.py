@@ -48,12 +48,16 @@ class LangGraphAgentController:
         logger.info(f"[Controller] RAG summary: {state.get('rag_summary')}")
 
         # --- Step 4: Predictive agent uses RAG output ---
-        risk_result = self.predictive_agent.predict_risk(state)
-        plan_result = self.predictive_agent.generate_plan(state)
+        import asyncio
+        rag_answer = state.get("rag_answer", "")
+        retrieved_context = state.get("retrieved_context", "")
+        
+        # Run async predict_risk synchronously
+        risk_result = asyncio.run(self.predictive_agent.predict_risk(rag_answer, retrieved_context))
 
         # --- Step 5: Update state with predictive outputs ---
-        state["predicted_risk"] = risk_result.get("risk")
-        state["recommended_plan"] = plan_result.get("plan")
+        state["predicted_risk"] = risk_result
+        state["recommended_plan"] = risk_result.get("plan", "No plan generated.")
 
         logger.info(f"[Controller] Predicted risk: {state['predicted_risk']}")
         logger.info(f"[Controller] Recommended plan: {state['recommended_plan']}")

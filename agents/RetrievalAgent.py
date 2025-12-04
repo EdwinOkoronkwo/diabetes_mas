@@ -1,29 +1,22 @@
-# diabetes_mas/agents/RetrievalAgent.py (Refined)
-
 # agents/RetrievalAgent.py
 
 from typing import Dict, Any
-from rag.state.RagAgentState import RagAgentState
+import logging
 
-from rag.state.RagAgentState import RagAgentState
-from rag.retriever.ChromaRetriever import ChromaRetriever
-from rag.pipeline.run_rag_pipeline import run_rag_pipeline
+from sentence_transformers import SentenceTransformer
 
 from rag.state.RagAgentState import RagAgentState
 from rag.retriever.ChromaRetriever import ChromaRetriever
 from rag.indexer.ChromaIndexer import ChromaIndexer
 from rag.generator.LLMGenerator import LLMGenerator
-from rag.generator.MockLLMGenerator import MockLLMGenerator
 from rag.pipeline.run_rag_pipeline import run_rag_pipeline
-from sentence_transformers import SentenceTransformer
-import logging
 from rag.utils.EmbeddingWrapper import SentenceTransformerEmbeddingFunction
-
 from rag.chroma_db import get_chroma_db
+
 logger = logging.getLogger(__name__)
 
 class RetrievalAgent:
-    def __init__(self, retriever=None, indexer=None, generator=None, pipeline_callable=None, use_mock_llm=False):
+    def __init__(self, retriever=None, indexer=None, generator=None, pipeline_callable=None):
         # Shared embedding function
         model = SentenceTransformer("all-MiniLM-L6-v2")
         embedding_fn = SentenceTransformerEmbeddingFunction(model)
@@ -53,7 +46,7 @@ class RetrievalAgent:
 
         # Generator
         if generator is None:
-            self.generator = MockLLMGenerator() if use_mock_llm else LLMGenerator()
+            self.generator = LLMGenerator()
         else:
             self.generator = generator
 

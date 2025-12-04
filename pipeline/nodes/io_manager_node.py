@@ -18,20 +18,9 @@ def io_manager_node(agent_state: dict) -> dict:
     current_input = agent_state.get("current_input", "")
 
     # Validate the input
-    validated = manager.validate_input(current_input)
-    
-    # Update state
-    agent_state["validated_input"] = validated
+    agent_state = manager.validate_input(agent_state)
     
     return agent_state
-    validated = manager.validate_input(current_input)
-
-    print(f"[InputManager]: Input validated: '{validated}'")
-
-    # Return the validated input directly to the state
-    return {
-        "validated_input": validated
-    }
 
 # def input_manager_node(agent_state: AgentState) -> AgentState:
 #     user_input = agent_state["current_input"]

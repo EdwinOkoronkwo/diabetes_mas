@@ -100,7 +100,7 @@ class MLModelWrapper:
         print(f"[MLModelWrapper] Attempting to load PyTorch model from {MODEL_STATE_DICT_PATH}...")
         try:
             # 2. Reconstruct the model architecture (Hyperparameters must match training)
-            EMBEDDING_DIM = 50
+            # EMBEDDING_DIM is defined globally (128)
             NUM_CLASSES = 2
 
             print(

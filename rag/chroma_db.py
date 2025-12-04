@@ -2,7 +2,7 @@ from chromadb.config import Settings
 from langchain_community.vectorstores import Chroma
 
 from sentence_transformers import SentenceTransformer
-from rag.nodes.index_node import SentenceTransformerEmbeddingFunction
+from rag.utils.EmbeddingWrapper import SentenceTransformerEmbeddingFunction
 
 
 def get_chroma_db():

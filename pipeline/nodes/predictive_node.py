@@ -3,34 +3,10 @@ import logging
 import asyncio
 from typing import Dict, Any
 
-
-# Assuming these global instances are initialized elsewhere (e.g., in main.py)
-# from system.agents import predictive_agent
-# from system.types import AgentState
-
-# --- Mocking the AgentState and Agent for clarity ---
-class PredictiveAgent:
-    """Mock for the actual PredictiveAgent class."""
-
-    def __init__(self):
-        logging.info("PredictiveAgent initialized.")
-
-    async def predict_risk(self, rag_answer: str, retrieved_context: str = "") -> Dict[str, Any]:
-        """The actual business logic method."""
-        # This is where your actual async logic from the second snippet lives
-        return {
-            "risk": "high",
-            "score": 0.95,
-            "plan": {"immediateActions": ["Refer to ER"]},
-            "method": "hybrid"
-        }
-
+from agents.PredictiveAgent import PredictiveAgent
 
 # Global agent instance (used by the node)
 predictive_agent_instance = PredictiveAgent()
-
-
-# --- End Mocking ---
 
 
 def predictive_node(agent_state: Dict[str, Any]) -> Dict[str, Any]:

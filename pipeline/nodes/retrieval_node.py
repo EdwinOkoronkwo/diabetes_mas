@@ -43,7 +43,7 @@ def retrieval_node(agent_state: dict) -> dict:
     print(f"[RetrievalAgent]: Processing query: '{user_query}'")
 
     # Create retrieval agent (mock LLM optional)
-    retrieval_agent = RetrievalAgent(use_mock_llm=False)
+    retrieval_agent = RetrievalAgent()
 
     # Create temporary internal RAG state
     temp_state = {"current_input": user_query}
