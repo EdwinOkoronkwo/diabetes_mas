@@ -3,7 +3,7 @@
 from langgraph.graph import StateGraph, END
 
 from pipeline.nodes.predictive_node import predictive_node
-from system.AgentState import AgentState
+from shared.state import AgentState
 from pipeline.nodes.io_manager_node import io_manager_node
 from pipeline.nodes.retrieval_node import retrieval_node
 

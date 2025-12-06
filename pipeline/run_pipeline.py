@@ -7,7 +7,7 @@ import sys
 
 from pipeline.nodes.predictive_node import predictive_node
 from pipeline.nodes.retrieval_node import retrieval_node
-from system.AgentState import AgentState
+from shared.state import AgentState
 
 def run_pipeline(user_input: str) -> AgentState:
 

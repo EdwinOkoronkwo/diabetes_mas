@@ -3,7 +3,7 @@
 from typing import TypedDict
 # Assuming these are necessary for your logic and state definition
 from agents.IOManager import IOManager
-from system.AgentState import AgentState
+from shared.state import AgentState
 
 
 # ============================================

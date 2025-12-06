@@ -1,5 +1,5 @@
 from interfaces.agents.IIOManager import IIOManager
-from system.AgentState import AgentState
+from shared.state import AgentState
 
 
 class IOManager(IIOManager):

@@ -3,7 +3,7 @@
 from typing import TypedDict
 # Assuming these imports match your structure
 from agents.RetrievalAgent import RetrievalAgent
-from system.AgentState import AgentState
+from shared.state import AgentState
 
 
 # Define the expected return structure

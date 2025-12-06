@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer
 from rag.retriever.ChromaRetriever import ChromaRetriever, logger
 from rag.state.RagAgentState import RagAgentState
 from rag.utils.EmbeddingWrapper import SentenceTransformerEmbeddingFunction
-from system.AgentState import AgentState
+from shared.state import AgentState
 # Import necessary dependencies for creating the embedding function
 from sentence_transformers import SentenceTransformer
 

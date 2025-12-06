@@ -6,8 +6,8 @@ import os
 
 from interfaces.system.AbstractLLMInterpreter import AbstractLLMInterpreter
 from interfaces.system.AbstractMLModel import AbstractMLModel
-from system.MLModelWrapper import MLModelWrapper
-from system.PredictiveLLMGenerator import PredictiveLLMGenerator
+from services.prediction_service import PredictionService
+from services.interpretation_service import InterpretationService
 
 # NOTE: The LLMGenerator dependency is removed as per user instruction.
 
@@ -40,8 +40,8 @@ class PredictiveAgent:
 
     def __init__(self, ml_model_path: Optional[str] = None):
         # Instantiate the required LLM Interpreter
-        self.llm: AbstractLLMInterpreter = PredictiveLLMGenerator()
-        self.ml = MLModelWrapper()
+        self.llm: InterpretationService = InterpretationService()
+        self.ml = PredictionService()
         logger.info("[PredictiveAgent] Agents initialized.")
 
     async def predict_risk(self, rag_answer: str, retrieved_context: str = "") -> Dict[str, Any]:
